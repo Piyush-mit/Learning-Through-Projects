@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import NavBar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ThemeProvider attribute={'class'} defaultTheme="system" enableSystem disableTransitionOnChange>
+            <Toaster/>
             <div className="min-h-screen">
               <NavBar/>
                 <main className="py-8">
@@ -47,7 +49,6 @@ export default function RootLayout({
                 </main>
             </div>
           </ThemeProvider>
-            
         </body>
       </html>
     </ClerkProvider>
