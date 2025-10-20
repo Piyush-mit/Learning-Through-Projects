@@ -1,12 +1,19 @@
-import { Button } from '@/components/ui/button'
-import ModeToggle from '@/components/ModeToggle'
-import { SignedOut, SignInButton, SignUpButton, SignedIn, UserButton } from '@clerk/nextjs'
-import React from 'react'
 
-function Home() {
+import React from 'react'
+import { currentUser } from '@clerk/nextjs/server'
+import CreatePost from '@/components/CreatePost';
+
+async function Home() {
+  const user = await currentUser();
   return (
-    <div>
-      Home page content
+    <div className='grid grid-cols-1 lg:grid-cols-10'>
+      <div className='lg:col-span-6'>
+          {user ? <CreatePost/> : null}
+      </div>
+      <div className='hidden lg:block lg:col=span-4 sticky top-20'>
+        Find User
+      </div>
+      
     </div>
   )
 }
