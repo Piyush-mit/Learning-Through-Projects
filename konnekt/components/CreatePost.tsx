@@ -6,7 +6,7 @@ import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Avatar, AvatarImage } from './ui/avatar';
 import { Textarea } from './ui/textarea';
-import { createPost } from '@/actions/server.actions';
+import { createPost } from '@/actions/post.actions';
 import toast from 'react-hot-toast';
 
 function CreatePost() {
