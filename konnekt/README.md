@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🚀 Konnect — A Minimal Social Media App
 
-## Getting Started
+Konnect is a simple social media application built to explore and understand modern full-stack development concepts with Next.js 14 App Router, TypeScript, Prisma, PostgreSQL, and Clerk Authentication.
 
-First, run the development server:
+This first version focuses on enabling users to create and view text-based posts, laying the groundwork for future features like image uploads, comments, and real-time updates.
 
-```bash
+✨ Highlights
+
+🚀 Tech Stack: Next.js App Router, PostgreSQL, Prisma, Clerk, TypeScript
+
+🧩 Architecture: Server Components, Layouts, Route Handlers, Server Actions
+
+🔥 Special Next.js Files: loading.tsx, error.tsx, not-found.tsx
+
+🪄 API Integration using Route Handlers
+
+📡 Data Fetching, Caching & Revalidation
+
+💡 Client & Server Components
+
+🧭 Dynamic & Static Routes
+
+🎨 Styling with Tailwind CSS & Shadcn UI
+
+🔐 Authentication & Authorization via Clerk
+
+🧠 Database Integration with Prisma
+
+📝 Server Actions & Forms
+
+⚡ Optimistic Updates for a smoother UX
+
+🧱 Features (v1)
+
+🗒️ Create and share written posts
+
+👤 Authentication with Clerk
+
+🕒 View posts from other users
+
+🔄 Automatic revalidation and data caching
+
+💫 Clean, minimal UI with Tailwind & Shadcn
+
+🧰 Tech Stack
+Category	Technology
+Framework	Next.js (App Router)
+Language	TypeScript
+Database	PostgreSQL
+ORM	Prisma
+Auth	Clerk
+Styling	Tailwind CSS + Shadcn
+Deployment	Vercel (recommended)
+🚀 Getting Started
+1️⃣ Clone the Repository
+git clone https://github.com/yourusername/konnect.git
+cd konnect
+
+2️⃣ Install Dependencies
+npm install
+
+3️⃣ Set Up Environment Variables
+
+Create a .env file in the project root and include:
+
+DATABASE_URL="your_postgres_connection_url"
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="your_clerk_publishable_key"
+CLERK_SECRET_KEY="your_clerk_secret_key"
+
+4️⃣ Generate Prisma Client
+npx prisma generate
+
+5️⃣ Run the Development Server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Visit http://localhost:3000
+ 🎉
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🧭 Roadmap
 
-## Learn More
+🖼️ Image posts
 
-To learn more about Next.js, take a look at the following resources:
+💬 Comments & likes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+🕓 Real-time updates (WebSockets / Pusher)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+📱 Responsive mobile design
 
-## Deploy on Vercel
+🧑‍🤝‍🧑 User profiles
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🧑‍💻 Purpose
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project was built as part of my learning journey to deepen my understanding of:
+
+Full-stack architecture with Next.js App Router
+
+Modern authentication using Clerk
+
+Database schema design and queries with Prisma
+
+Server Actions and optimistic UI updates
+
+📜 License
+
+This project is open source under the MIT License.
