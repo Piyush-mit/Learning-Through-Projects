@@ -1,7 +1,19 @@
+import Canvas from "@/components/Canvas"
 import CodeEditor from "../components/CodeEditor"
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "../components/ui/resizable"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { changeTheme } from "@/redux/slices/themeSlice"
+import type { StateType } from "@/redux/store"
 
 function Compiler() {
+  const dispatch = useDispatch();
+  const theme = useSelector((state: StateType) => state.themeSlice.value);
+  useEffect(() => {
+    const systemTheme = localStorage.getItem('vite-ui-theme');
+    if (systemTheme != 'dark') dispatch(changeTheme('githubLight'))
+    else dispatch(changeTheme('githubDark'))
+  }, []);
   return (
     <div>
       <ResizablePanelGroup
@@ -9,11 +21,11 @@ function Compiler() {
         className="md:min-w-[450px]"
       >
         <ResizablePanel defaultSize={50} className=" h-[calc(100dvh-61px)] min-w-[450px]">
-          <CodeEditor />
+          <CodeEditor theme={theme} />
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel defaultSize={50} className=" h-[calc(100dvh-61px)] min-w-[360px]">
-          Right Size
+          <Canvas />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

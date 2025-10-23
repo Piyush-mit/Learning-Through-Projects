@@ -12,11 +12,12 @@ function Header() {
         </div>
       </Link>
 
-      <div className=" flex gap-3 items-center h-full">
-        <ModeToggle />
-        <div className="text-gray-400">
+      <div className=" flex gap-4 items-center h-full">
+        <div className="text-gray-400 flex gap-4">
+          <Link to={'/'}> <div className="hover:text-gray-200 transition-colors"> Home </div> </Link>
           <Link to={'/compiler'}> <div className="hover:text-gray-200 transition-colors"> Compiler </div> </Link>
         </div>
+        <ModeToggle />
       </div>
     </div>
   )

@@ -1,4 +1,3 @@
-
 import {
     Select,
     SelectTrigger,
@@ -6,26 +5,15 @@ import {
     SelectItem,
     SelectValue,
 } from "@/components/ui/select";
+import { changeTheme } from "@/redux/slices/themeSlice";
+import type { StateType } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
 
-export type ThemeKey = ""
-    | "githubDark"
-    | "githubLight"
-    | "dracula"
-    | "atomone"
-    | "materialDark"
-    | "materialLight";
-
-export default function ThemeSelect({
-    value,
-    onChange,
-    className,
-}: {
-    value?: ThemeKey;
-    onChange: (v: ThemeKey) => void;
-    className?: string;
-}) {
+export default function ThemeSelect() {
+    const theme = useSelector((state: StateType) => state.themeSlice.value);
+    const dispatch = useDispatch();
     return (
-        <Select value={value} onValueChange={(selectedVal:ThemeKey) => onChange(selectedVal)} defaultValue="githubDark">
+        <Select onValueChange={(selectedVal) => dispatch(changeTheme(selectedVal))} defaultValue={theme} value={theme}>
             <SelectTrigger className="focus-visible:border focus-visible:ring-0 w-40 max-w-40">
                 <SelectValue placeholder="Select theme" />
             </SelectTrigger>
