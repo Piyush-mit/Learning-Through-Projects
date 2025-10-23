@@ -8,7 +8,7 @@ function Compiler() {
         direction="horizontal"
         className="md:min-w-[450px]"
       >
-        <ResizablePanel defaultSize={50} className=" h-[calc(100dvh-61px)] min-w-[360px]">
+        <ResizablePanel defaultSize={50} className=" h-[calc(100dvh-61px)] min-w-[450px]">
           <CodeEditor />
         </ResizablePanel>
         <ResizableHandle />

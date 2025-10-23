@@ -1,10 +1,6 @@
 import { useCallback, useState } from "react";
-
-// components imports
 import ThemeSelect, { type ThemeKey } from "./EditorThemeSelect";
-import LanguageSelect, { type LangKey } from "./EditorLanguageSelect";
-
-// CodeMirror imports 
+import LanguageSelect from "./EditorLanguageSelect";
 import CodeMirror, { type Extension } from "@uiw/react-codemirror";
 import {
     githubDark,
@@ -17,16 +13,17 @@ import {
 import { javascript } from "@codemirror/lang-javascript";
 import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
-
-// UI imports
 import { Button } from "./ui/button";
 import { CopyIcon, SaveIcon } from "lucide-react";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import type { StateType } from "@/redux/store";
 
 export default function CodeEditor() {
     const [value, setValue] = useState("");
     const [themeKey, setThemeKey] = useState<ThemeKey>("githubDark");
-    const [langKey, setLangKey] = useState<LangKey>("javascript");
+    const currentLanguage = useSelector((state: StateType) => state.compilerSlice.currentLanguage);
+    const dispatch = useDispatch();
 
     // Editor
     const onChange = useCallback((val: string) => setValue(val), []);
@@ -56,23 +53,19 @@ export default function CodeEditor() {
     else if (themeKey === "materialDark") currentTheme = materialDark;
     else if (themeKey === "materialLight") currentTheme = materialLight;
 
-    // Languages
-    let currentLanguage: Extension[] = [javascript()];
-    if (langKey === "typescript") currentLanguage = [javascript({ typescript: true })];
-    else if (langKey === "jsx") currentLanguage = [javascript({ jsx: true })];
-    else if (langKey === "tsx") currentLanguage = [javascript({ jsx: true, typescript: true })];
-    else if (langKey === "html") currentLanguage = [html()];
-    else if (langKey === "css") currentLanguage = [css()];
+    let language: Extension[] = [html()];
 
+    if (currentLanguage === "css") language = [css()];
+    else if (currentLanguage === "javascript") language = [javascript({ jsx: true, typescript: true })];
 
     return (
         <div className="flex h-screen flex-col">
             {/* Editor options */}
-            <div className=" flex justify-between items-center">
+            <div className=" flex justify-between items-center px-2">
                 {/* selects */}
-                <div className="p-2 flex gap-2 h-full items-center">
+                <div className="flex gap-2 h-full items-center">
                     <ThemeSelect value={themeKey} onChange={(val) => setThemeKey(val)} />
-                    <LanguageSelect value={langKey} onChange={(val) => setLangKey(val)} />
+                    <LanguageSelect />
                 </div>
 
                 {/* buttons */}
@@ -86,12 +79,12 @@ export default function CodeEditor() {
                 <CodeMirror
                     value={value}
                     height="100vh"
-                    extensions={currentLanguage}
+                    extensions={language}
                     theme={currentTheme}
                     onChange={onChange}
                     placeholder={"Welcome to Devpen"}
                 />
             </div>
         </div>
-    ); 
+    );
 }

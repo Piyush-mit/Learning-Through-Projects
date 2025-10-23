@@ -25,8 +25,8 @@ export default function ThemeSelect({
     className?: string;
 }) {
     return (
-        <Select value={value} onValueChange={(selectedVal:ThemeKey) => onChange(selectedVal)}>
-            <SelectTrigger className={className ?? "w-64"}>
+        <Select value={value} onValueChange={(selectedVal:ThemeKey) => onChange(selectedVal)} defaultValue="githubDark">
+            <SelectTrigger className="focus-visible:border focus-visible:ring-0 w-40 max-w-40">
                 <SelectValue placeholder="Select theme" />
             </SelectTrigger>
             <SelectContent>

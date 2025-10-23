@@ -1,35 +1,27 @@
 import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
+    Select,
+    SelectTrigger,
+    SelectContent,
+    SelectItem,
+    SelectValue,
 } from "@/components/ui/select";
+import { updateCurrentLanguage, type CompilerStateType } from "@/redux/slices/compilerSlice";
+import type { StateType } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
 
-export type LangKey = "javascript" | "typescript" | "jsx" | "tsx" | "html" | "css";
-
-export default function LanguageSelect({
-  value,
-  onChange,
-  className,
-}: {
-  value: LangKey;
-  onChange: (v: LangKey) => void;
-  className?: string;
-}) {
-  return (
-    <Select value={value} onValueChange={(val:LangKey) => onChange(val)}>
-      <SelectTrigger className={className ?? "w-56"}>
-        <SelectValue placeholder="Select language" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="javascript">JavaScript</SelectItem>
-        <SelectItem value="typescript">TypeScript</SelectItem>
-        <SelectItem value="jsx">JSX</SelectItem>
-        <SelectItem value="tsx">TSX</SelectItem>
-        <SelectItem value="html">HTML</SelectItem>
-        <SelectItem value="css">CSS</SelectItem>
-      </SelectContent>
-    </Select>
-  );
+export default function LanguageSelect() {
+    const currentLanguage = useSelector((state: StateType) => state.compilerSlice.currentLanguage);
+    const dispatch = useDispatch();
+    return (
+        <Select onValueChange={(value: CompilerStateType["currentLanguage"]) => dispatch(updateCurrentLanguage(value))} defaultValue={currentLanguage}>
+            <SelectTrigger className="focus-visible:border focus-visible:ring-0 w-40 max-w-40">
+                <SelectValue placeholder="Select language" />
+            </SelectTrigger>
+            <SelectContent className="focus:ring-0">
+                <SelectItem value="html">HTML</SelectItem>
+                <SelectItem value="css">CSS</SelectItem>
+                <SelectItem value="javascript">JavaScript</SelectItem>
+            </SelectContent>
+        </Select>
+    );
 }
