@@ -1,0 +1,25 @@
+import { Link } from "react-router-dom"
+import ModeToggle from "./Mode-toggle"
+
+function Header() {
+  return (
+    <div className=" sticky top-0 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 z-50 px-16 flex items-center h-[60px] justify-between">
+
+      <Link to={'/'}>
+        <div className=" flex gap-2 h-full items-center select-none">
+          <div className=" font-doto font-bold text-xl">DevPen</div>
+          <div className=" font-doto text-xl">Compiler</div>
+        </div>
+      </Link>
+
+      <div className=" flex gap-3 items-center h-full">
+        <ModeToggle />
+        <div className="text-gray-400">
+          <Link to={'/compiler'}> <div className="hover:text-gray-200 transition-colors"> Compiler </div> </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Header

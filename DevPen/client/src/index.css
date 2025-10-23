@@ -3,6 +3,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  font-family: var(--font-popping);
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -118,3 +122,16 @@
     @apply bg-background text-foreground;
   }
 } 
+
+@font-face {
+    font-family: Doto ;
+    src : url('../src/assets/fonts/Doto-Regular.ttf')
+}
+@font-face {
+    font-family: Poppins ;
+    src : url('../src/assets/fonts/Poppins-Regular.ttf')
+}
+@theme {
+    --font-doto : Doto , "sans-serif" ;
+    --font-popping : Poppins , "sans-serif" ;
+}
