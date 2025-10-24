@@ -36,7 +36,7 @@ export default function Canvas() {
     }, [nextCode]);
 
     return (
-        <div className="bg-white h-full min-h-[calc(100dvh-60px)]">
+        <div className="bg-white h-full min-h-[calc(100dvh-60px)] m-0">
             <iframe
                 title="rendered-code"
                 className="w-full h-full"

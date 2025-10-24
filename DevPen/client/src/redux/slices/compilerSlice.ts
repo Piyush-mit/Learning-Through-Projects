@@ -27,21 +27,23 @@ export const htmlBase = `<!DOCTYPE html>
 </html>
 `;
 
-export const cssBase = `body {
+export const cssBase = `* {
   margin: 0;
-  min-height: 100vh;
+  padding: 0;
+}
+body {
+  height: 100vh;
+  widows: 100vw;
   display: grid;
   place-items: center;
-  background: black;
+  background: #0d1117;
   color: rgb(229 231 235);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif;
 }
 .card {
-  width: min(640px, 92vw);
+  width: 100vw;
   display: grid;
   place-items: center;
-  border-radius: 14px;
-  padding: 24px;
 }
 h1 { margin: 0 0 20px; font-weight: 700; letter-spacing: 0.3px; }
 #btn {
@@ -50,16 +52,15 @@ h1 { margin: 0 0 20px; font-weight: 700; letter-spacing: 0.3px; }
   gap: 8px;
   border: 1px solid rgb(229 231 235);
   color: black;
-  padding: 10px 14px;
-  border-radius: 10px;
+  padding: 6px 14px;
+  border-radius: 4px;
   cursor: pointer;
   transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
   font-weight: 300;
 }
 #btn:hover { transform: translateY(-1px); background: rgb(229,231,235,0.9); }
 #btn:active { transform: translateY(0); }
-#count { font-variant-numeric: tabular-nums; font-weight: 700; }
-`;
+#count { font-variant-numeric: tabular-nums; font-weight: 700; }`;
 
 export const javascriptBase = `const btn = document.getElementById("btn");
 const countEl = document.getElementById("count");
