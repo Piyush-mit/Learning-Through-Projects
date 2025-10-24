@@ -15,48 +15,19 @@ import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { Button } from "./ui/button";
 import { CopyIcon, SaveIcon } from "lucide-react";
-import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import type { StateType } from "@/redux/store";
 import { updateCode } from "@/redux/slices/compilerSlice";
+import { handleCopy, handleSave } from "@/actions/compiler.action";
 
 export default function CodeEditor({ theme: themeKey }: { theme: string }) {
     const fullCode = useSelector((state: StateType) => state.compilerSlice.fullCode);
     const currentLanguage = useSelector((state: StateType) => state.compilerSlice.currentLanguage);
     const dispatch = useDispatch();
 
-    // Editor
     const onChange = useCallback((value: string) => {
         dispatch(updateCode(value));
     }, [dispatch]);
-
-    async function handleCopy() {
-        try {
-            await navigator.clipboard.writeText(fullCode[currentLanguage]);
-            toast.success("Copied to clipboard");
-        } catch (err) {
-            console.error("Copy failed", err);
-            toast.error("Copy to clipboard failed");
-        }
-    }
-    async function handleSave() {
-        try {
-            toast.success("Saved successfully");
-        } catch (error) {
-            toast.error("Saving failed");
-        }
-    }
-    // async function handleReset() {
-    //     const fullBaseCode = {
-    //         html : htmlBase ,
-    //         css : cssBase ,
-    //         javascript : javascriptBase
-    //     };
-    //     alert("Reset current code ?");
-    //     dispatch(updateCode(fullBaseCode[currentLanguage]));
-
-    // }
-    // Themes
 
     let currentTheme: any = githubDark;
     if (themeKey === "githubDark") currentTheme = githubDark;
@@ -82,9 +53,8 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
 
                 {/* buttons */}
                 <div className="p-2 flex gap-2 h-full items-center">
-                    {/* <Button variant={'custom'} size={"sm"} onClick={handleReset}><SaveIcon /></Button> */}
-                    <Button variant={'custom'} size={"sm"} onClick={handleSave}><SaveIcon /></Button>
-                    <Button variant={'custom'} size={"sm"} onClick={handleCopy}><CopyIcon /></Button>
+                    <Button variant={'custom'} size={"sm"} onClick={()=>handleSave(fullCode)}><SaveIcon /></Button>
+                    <Button variant={'custom'} size={"sm"} onClick={()=>handleCopy(fullCode,currentLanguage)}><CopyIcon /></Button>
                 </div>
             </div>
 
