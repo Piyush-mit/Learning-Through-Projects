@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import ThemeSelect from "./EditorThemeSelect";
 import LanguageSelect from "./EditorLanguageSelect";
 import CodeMirror, { type Extension } from "@uiw/react-codemirror";
+import { EditorView } from "@uiw/react-codemirror";
 import {
     githubDark,
     githubLight,
@@ -40,9 +41,9 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
     else if (themeKey === "materialDark") currentTheme = materialDark;
     else if (themeKey === "materialLight") currentTheme = materialLight;
 
-    let language: Extension[] = [html()];
-    if (currentLanguage === "css") language = [css()];
-    else if (currentLanguage === "javascript") language = [javascript({ jsx: true, typescript: true })];
+    let language: Extension = html();
+    if (currentLanguage === "css") language = css();
+    else if (currentLanguage === "javascript") language = javascript({ jsx: true, typescript: true });
 
     return (
         <div className="flex h-screen flex-col">
@@ -70,7 +71,7 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
                 <CodeMirror
                     value={fullCode[currentLanguage]}
                     height="calc(100dvh - 60px - 48px)"
-                    extensions={language}
+                    extensions={[language,EditorView.lineWrapping]}
                     theme={currentTheme}
                     onChange={onChange}
                     placeholder={"Welcome to Devpen"}
