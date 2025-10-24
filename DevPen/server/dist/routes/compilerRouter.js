@@ -5,4 +5,5 @@ const express_1 = require("express");
 const CompilerController_1 = require("../controllers/CompilerController");
 exports.compilerRouter = (0, express_1.Router)();
 exports.compilerRouter.post('/save', CompilerController_1.handleSave);
+exports.compilerRouter.get('/load/:urlId', CompilerController_1.getCode);
 //# sourceMappingURL=compilerRouter.js.map

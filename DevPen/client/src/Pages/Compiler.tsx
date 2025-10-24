@@ -5,9 +5,20 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { changeTheme } from "@/redux/slices/themeSlice"
 import type { StateType } from "@/redux/store"
+import { useParams } from "react-router-dom"
+import { getCode } from "@/actions/compiler.action"
 
 function Compiler() {
   const dispatch = useDispatch();
+  const { urlId } = useParams();
+  
+  useEffect(() => {
+    if (urlId) {
+      getCode(urlId, dispatch).then().catch();
+    }
+  }, [urlId])
+
+
   const theme = useSelector((state: StateType) => state.themeSlice.value);
   useEffect(() => {
     const systemTheme = localStorage.getItem('vite-ui-theme');

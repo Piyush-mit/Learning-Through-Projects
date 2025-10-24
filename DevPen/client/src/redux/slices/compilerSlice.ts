@@ -2,12 +2,12 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 
 export interface CompilerStateType {
-    fullCode: {
-        html: string
-        css: string
-        javascript: string
-    }
-    currentLanguage: "html" | "css" | "javascript"
+  fullCode: {
+    html: string
+    css: string
+    javascript: string
+  }
+  currentLanguage: "html" | "css" | "javascript"
 }
 
 export const htmlBase = `<!DOCTYPE html>
@@ -79,26 +79,29 @@ document.addEventListener("keydown", (e) => {
 `
 
 const initialState: CompilerStateType = {
-    fullCode: {
-        html: htmlBase,
-        css: cssBase,
-        javascript: javascriptBase
-    },
-    currentLanguage: 'html',
+  fullCode: {
+    html: htmlBase,
+    css: cssBase,
+    javascript: javascriptBase
+  },
+  currentLanguage: 'html',
 }
 
 const compilerSlice = createSlice({
-    name: 'compilerSlice',
-    initialState,
-    reducers: {
-        updateCurrentLanguage: (state, action: PayloadAction<CompilerStateType['currentLanguage']>) => {
-            state.currentLanguage = action.payload;
-        },
-        updateCode: (state, action: PayloadAction<string>) => {
-            state.fullCode[state.currentLanguage] = action.payload;
-        },
+  name: 'compilerSlice',
+  initialState,
+  reducers: {
+    updateCurrentLanguage: (state, action: PayloadAction<CompilerStateType['currentLanguage']>) => {
+      state.currentLanguage = action.payload;
+    },
+    updateCode: (state, action: PayloadAction<string>) => {
+      state.fullCode[state.currentLanguage] = action.payload;
+    },
+    updateFullCode: (state, action: PayloadAction<CompilerStateType['fullCode']>) => {
+      state.fullCode = action.payload;
     }
+  }
 })
 
 export default compilerSlice.reducer;
-export const { updateCurrentLanguage, updateCode } = compilerSlice.actions;
+export const { updateCurrentLanguage, updateCode, updateFullCode } = compilerSlice.actions;

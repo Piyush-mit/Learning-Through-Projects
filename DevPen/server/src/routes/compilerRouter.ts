@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { handleSave } from "../controllers/CompilerController";
+import { getCode, handleSave } from "../controllers/CompilerController";
 
 export const compilerRouter = Router()
 
-compilerRouter.post('/save',handleSave);
+compilerRouter.post('/save', handleSave);
+compilerRouter.get('/load/:urlId', getCode);

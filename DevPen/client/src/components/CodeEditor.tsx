@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import ThemeSelect from "./EditorThemeSelect";
 import LanguageSelect from "./EditorLanguageSelect";
 import CodeMirror, { type Extension } from "@uiw/react-codemirror";
@@ -14,17 +14,20 @@ import { javascript } from "@codemirror/lang-javascript";
 import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { Button } from "./ui/button";
-import { CopyIcon, SaveIcon } from "lucide-react";
+import { CopyIcon, Loader2, SaveIcon, Share2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import type { StateType } from "@/redux/store";
 import { updateCode } from "@/redux/slices/compilerSlice";
-import { handleCopy, handleSave } from "@/actions/compiler.action";
+import { handleCopy, handleSave, handleShare } from "@/actions/compiler.action";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function CodeEditor({ theme: themeKey }: { theme: string }) {
     const fullCode = useSelector((state: StateType) => state.compilerSlice.fullCode);
     const currentLanguage = useSelector((state: StateType) => state.compilerSlice.currentLanguage);
+    const [saving , setSaving] = useState(false);
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
+    const { urlId } = useParams();
     const onChange = useCallback((value: string) => {
         dispatch(updateCode(value));
     }, [dispatch]);
@@ -53,7 +56,12 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
 
                 {/* buttons */}
                 <div className="p-2 flex gap-2 h-full items-center">
-                    <Button variant={'custom'} size={"sm"} onClick={()=>handleSave(fullCode)}><SaveIcon /></Button>
+                    {urlId && <Button disabled={saving} variant={'custom'} size={"sm"} onClick={()=>handleShare(window.location.href)}>
+                        <Share2/>
+                    </Button>}
+                    <Button disabled={saving} variant={'custom'} size={"sm"} onClick={()=>handleSave(fullCode,navigate,setSaving)}>
+                        {saving ? <Loader2 className=" animate-spin"/> : <SaveIcon/>}
+                    </Button>
                     <Button variant={'custom'} size={"sm"} onClick={()=>handleCopy(fullCode,currentLanguage)}><CopyIcon /></Button>
                 </div>
             </div>
