@@ -7,9 +7,10 @@ import {
 } from "@/components/ui/select";
 import { updateCurrentLanguage, type CompilerStateType } from "@/redux/slices/compilerSlice";
 import type { StateType } from "@/redux/store";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function LanguageSelect() {
+export default React.memo(function LanguageSelect() {
     const currentLanguage = useSelector((state: StateType) => state.compilerSlice.currentLanguage);
     const dispatch = useDispatch();
     return (
@@ -24,4 +25,4 @@ export default function LanguageSelect() {
             </SelectContent>
         </Select>
     );
-}
+})

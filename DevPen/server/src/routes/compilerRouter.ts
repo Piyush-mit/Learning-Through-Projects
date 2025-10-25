@@ -1,7 +1,13 @@
-import { Router } from "express";
-import { getCode, handleSave } from "../controllers/CompilerController";
+import express from "express";
 
-export const compilerRouter = Router()
+import { verifyTokenAnonymous } from "../middlewares/verifyTokenAnonymous";
+import { verifyToken } from "../middlewares/verifyToken";
+import { saveCode, loadCode, deleteCode, editCode, getAllCodes } from "../controllers/compiler-Controller";
 
-compilerRouter.post('/save', handleSave);
-compilerRouter.get('/load/:urlId', getCode);
+export const compilerRouter = express.Router();
+
+compilerRouter.post("/save", verifyTokenAnonymous, saveCode);
+compilerRouter.get("/load/:urlId", verifyTokenAnonymous, loadCode);
+compilerRouter.delete("/delete/:id", verifyToken, deleteCode);
+compilerRouter.put("/edit/:urlId", verifyToken, editCode);
+compilerRouter.get("/get-all-codes", getAllCodes);

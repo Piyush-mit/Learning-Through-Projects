@@ -76,16 +76,16 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
 
                 {/* buttons */}
                 <div className="p-2 flex gap-2 h-full items-center">
-                    {urlId && <Button disabled={saving} variant={'custom'} size={"sm"} onClick={handleShareClick}>
+                    <Button disabled={saving || !urlId ? true : false} variant={'custom'} size={"sm"} onClick={handleShareClick}>
                         <Share2 />
-                    </Button>}
+                    </Button>
                     <Button disabled={saving} variant={'custom'} size={"sm"} onClick={handleSaveClick}>
                         {saving ? <Loader2 className=" animate-spin" /> : <SaveIcon />}
                     </Button>
                     <Button variant={'custom'} size={"sm"} onClick={handleCopyClick}><CopyIcon /></Button>
                 </div>
             </div>
-
+            {/* Code Editor Window */}
             <div className="flex-1">
                 <CodeMirror
                     value={fullCode[currentLanguage]}

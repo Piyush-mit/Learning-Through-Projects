@@ -7,9 +7,10 @@ import {
 } from "@/components/ui/select";
 import { changeTheme } from "@/redux/slices/themeSlice";
 import type { StateType } from "@/redux/store";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function ThemeSelect() {
+export default React.memo(function ThemeSelect() {
     const theme = useSelector((state: StateType) => state.themeSlice.value);
     const dispatch = useDispatch();
     return (
@@ -27,4 +28,4 @@ export default function ThemeSelect() {
             </SelectContent>
         </Select>
     );
-}
+})

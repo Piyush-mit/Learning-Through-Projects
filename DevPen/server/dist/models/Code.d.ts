@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
-export interface ICodeSchema {
+interface ICodeSchema {
     fullCode: {
         html: string;
         css: string;
         javascript: string;
     };
+    title: string;
+    ownerInfo: mongoose.Types.ObjectId | string;
+    ownerName: string;
 }
 export declare const Code: mongoose.Model<ICodeSchema, {}, {}, {}, mongoose.Document<unknown, {}, ICodeSchema, {}, mongoose.DefaultSchemaOptions> & ICodeSchema & {
     _id: mongoose.Types.ObjectId;
@@ -19,4 +22,5 @@ export declare const Code: mongoose.Model<ICodeSchema, {}, {}, {}, mongoose.Docu
 } & {
     __v: number;
 }>>;
+export {};
 //# sourceMappingURL=Code.d.ts.map

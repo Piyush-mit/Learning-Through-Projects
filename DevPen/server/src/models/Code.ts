@@ -1,19 +1,28 @@
 import mongoose from "mongoose";
 
-export interface ICodeSchema {
-    fullCode: {
-        html: string
-        css: string
-        javascript: string
-    }
+interface ICodeSchema {
+  fullCode: {
+    html: string;
+    css: string;
+    javascript: string;
+  };
+  title: string;
+  ownerInfo: mongoose.Types.ObjectId | string;
+  ownerName: string;
 }
 
-const codeSchema = new mongoose.Schema<ICodeSchema>({
+const CodeSchema = new mongoose.Schema<ICodeSchema>(
+  {
     fullCode: {
-        html: String,
-        css: String,
-        javascript: String,
-    }
-}, { timestamps: true })
+      html: String,
+      css: String,
+      javascript: String,
+    },
+    title: { type: String, required: true },
+    ownerInfo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    ownerName: String,
+  },
+  { timestamps: true }
+);
 
-export const Code = mongoose.model("Code",codeSchema);
+export const Code = mongoose.model("Code", CodeSchema);
