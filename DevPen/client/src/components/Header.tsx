@@ -13,8 +13,10 @@ function Header() {
       </Link>
 
       <div className=" flex gap-4 items-center h-full">
-        <div className="text-gray-400 flex gap-4">
+        <div className="text-gray-400 flex gap-6">
           <Link to={'/'}> <div className="hover:text-gray-200 transition-colors"> Home </div> </Link>
+          <Link to={'/signup'}> <div className="hover:text-gray-200 transition-colors"> Sign up </div> </Link>
+          <Link to={'/signin'}> <div className="hover:text-gray-200 transition-colors"> Sign in </div> </Link>
           <Link to={'/compiler'}> <div className="hover:text-gray-200 transition-colors"> Compiler </div> </Link>
         </div>
         <ModeToggle />

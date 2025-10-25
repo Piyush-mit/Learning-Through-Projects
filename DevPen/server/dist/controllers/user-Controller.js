@@ -11,12 +11,17 @@ const signup = async (req, res) => {
     const { username, email, password } = req.body;
     const usernameRegex = /^[a-zA-Z0-9]+$/;
     try {
-        const existingUser = await User_1.User.findOne({ email: email });
-        if (existingUser) {
+        const existingUser = await User_1.User.findOne({
+            $or: [{ email }, { username }],
+        });
+        if (existingUser?.email === email) {
             return res.status(400).send({ message: "Email already exists!" });
         }
+        else if (existingUser?.username === username) {
+            return res.status(400).send({ message: "Username already exists!" });
+        }
         if (!usernameRegex.test(username)) {
-            return res.status(400).send({ message: "Some characters are not allowed!" });
+            return res.status(400).send({ message: "Special characters not allowed!" });
         }
         const salt = await bcrypt_1.default.genSalt();
         const hashedPassword = await bcrypt_1.default.hash(password, salt);
@@ -93,7 +98,7 @@ exports.login = login;
 const logout = async (req, res) => {
     try {
         res.clearCookie("token");
-        return res.status(200).send({ message: "logged out successfully!" });
+        return res.status(200).send({ message: "Logged out successfully!" });
     }
     catch (error) {
         return res.status(500).send({ message: "Error logging out!", error });

@@ -8,12 +8,18 @@ export const signup = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   const usernameRegex = /^[a-zA-Z0-9]+$/;
   try {
-    const existingUser = await User.findOne({ email: email });
-    if (existingUser) {
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }],
+    });
+
+    if (existingUser?.email === email) {
       return res.status(400).send({ message: "Email already exists!" });
+    } else if (existingUser?.username === username) {
+      return res.status(400).send({ message: "Username already exists!" });
     }
+    
     if (!usernameRegex.test(username)) {
-      return res.status(400).send({ message: "Some characters are not allowed!" });
+      return res.status(400).send({ message: "Special characters not allowed!" });
     }
 
     const salt = await bcrypt.genSalt();
@@ -100,7 +106,7 @@ export const login = async (req: Request, res: Response) => {
       email: existingUser.email,
       savedCodes: existingUser.savedCodes,
     });
-    
+
   } catch (error) {
     return res.status(500).send({ message: "Error log in!", error: error });
   }
@@ -109,7 +115,7 @@ export const login = async (req: Request, res: Response) => {
 export const logout = async (req: Request, res: Response) => {
   try {
     res.clearCookie("token");
-    return res.status(200).send({ message: "logged out successfully!" });
+    return res.status(200).send({ message: "Logged out successfully!" });
   } catch (error) {
     return res.status(500).send({ message: "Error logging out!", error });
   }

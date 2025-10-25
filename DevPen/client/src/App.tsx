@@ -5,6 +5,8 @@ import LoadingFallback from "./components/Loading-fallback"
 import { Suspense } from "react"
 import Compiler from "./Pages/Compiler"
 import NotFound from "./components/NotFound"
+import SignUp from "./Pages/Signup"
+import SignIn  from "./Pages/SignIn"
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/compiler" element={<Compiler />} />
         <Route path="/compiler/:urlId" element={<Compiler />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>

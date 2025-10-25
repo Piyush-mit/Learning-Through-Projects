@@ -3,12 +3,12 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 const themeSlice = createSlice({
     name: 'themeSlice',
     initialState: {
-        value : 'githubDark'
+        value: 'githubDark',
     },
     reducers: {
         changeTheme: (state, action: PayloadAction<string>) => {
             state.value = action.payload;
-        }
+        },
     }
 })
 
