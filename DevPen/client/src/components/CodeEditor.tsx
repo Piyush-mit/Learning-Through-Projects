@@ -11,6 +11,12 @@ import {
     materialDark,
     materialLight,
 } from "@uiw/codemirror-themes-all";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+
 import { javascript } from "@codemirror/lang-javascript";
 import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
@@ -55,7 +61,7 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
     }, [currentLanguage]);
 
     const handleSaveClick = useCallback(() => {
-        handleSave(fullCode, navigate, setSaving,title);
+        handleSave(fullCode, navigate, setSaving, title);
     }, [fullCode, navigate]);
 
     const handleCopyClick = useCallback(() => {
@@ -78,13 +84,34 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
 
                 {/* buttons */}
                 <div className="p-2 flex gap-2 h-full items-center">
-                    <Button disabled={saving || !urlId ? true : false} variant={'custom'} size={"sm"} onClick={handleShareClick}>
-                        <Share2 />
-                    </Button>
-                    <Button disabled={saving} variant={'custom'} size={"sm"} onClick={handleSaveClick}>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button disabled={saving || !urlId ? true : false} variant={'custom'} size={"sm"} onClick={handleShareClick}>
+                                <Share2 />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Generate sharable link</p>
+                        </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button disabled={saving} variant={'custom'} size={"sm"} onClick={handleSaveClick}>
                         {saving ? <Loader2 className=" animate-spin" /> : <SaveIcon />}
                     </Button>
-                    <Button variant={'custom'} size={"sm"} onClick={handleCopyClick}><CopyIcon /></Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Save changes</p>
+                        </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant={'custom'} size={"sm"} onClick={handleCopyClick}><CopyIcon /></Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Copy to clipboard</p>
+                        </TooltipContent>
+                    </Tooltip>
                     <SaveDialog />
                 </div>
             </div>

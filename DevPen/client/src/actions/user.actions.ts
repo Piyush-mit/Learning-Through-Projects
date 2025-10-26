@@ -42,3 +42,12 @@ export const logout = async () => {
         return error?.response;
     }
 }
+
+export const getProjects = async () => {
+    try {
+        const response = await axios.get('http://localhost:4000/user/my-codes', { withCredentials: true });
+        return response;
+    } catch (error: any) {
+        return error?.response;
+    }
+}

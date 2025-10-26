@@ -36,7 +36,7 @@ export const saveOrUpdateCode = async (req: AuthRequest, res: Response) => {
       existingCode.fullCode = fullCode;
       await existingCode.save();
 
-      return res.status(200).json({ message: "Code updated successfully" });
+      return res.status(200).json({ message: "Code updated successfully" , urlId : existingCode._id });
     } else {
       // new save
       const newCode = await Code.create({
@@ -242,7 +242,7 @@ export const editCode = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getAllCodes = async (req: Request, res: Response) => {
+export const getAllCodes = async (req: AuthRequest, res: Response) => {
   try {
     const allCodes = await Code.find().sort({ createdAt: -1 });
     return res.status(200).send(allCodes);

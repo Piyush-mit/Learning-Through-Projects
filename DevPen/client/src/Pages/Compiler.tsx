@@ -7,6 +7,7 @@ import { changeTheme } from "@/redux/slices/themeSlice"
 import type { StateType } from "@/redux/store"
 import { useParams } from "react-router-dom"
 import { getCode } from "@/actions/compiler.action"
+import toast from "react-hot-toast"
 
 function Compiler() {
   const dispatch = useDispatch();
@@ -14,10 +15,13 @@ function Compiler() {
   
   useEffect(() => {
     if (urlId) {
-      getCode(urlId, dispatch).then().catch();
+      try {
+        getCode(urlId, dispatch).then()
+      } catch (error) {
+        toast.error("")
+      }
     }
   }, [urlId])
-
 
   const theme = useSelector((state: StateType) => state.themeSlice.value);
   useEffect(() => {

@@ -8,7 +8,7 @@ export interface CompilerStateType {
     javascript: string
   }
   currentLanguage: "html" | "css" | "javascript",
-  title?: string
+  title: string
 }
 
 export const htmlBase = `<!DOCTYPE html>

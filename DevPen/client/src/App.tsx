@@ -6,7 +6,8 @@ import { Suspense } from "react"
 import Compiler from "./Pages/Compiler"
 import NotFound from "./components/NotFound"
 import SignUp from "./Pages/Signup"
-import SignIn  from "./Pages/SignIn"
+import SignIn from "./Pages/SignIn"
+import Listprojects from "./components/Profile"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/compiler/:urlId?" element={<Compiler />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/test" element={<Listprojects />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>

@@ -8,4 +8,4 @@ compilerRouter.post("/save", verifyToken, saveOrUpdateCode);
 compilerRouter.get("/load/:urlId", verifyToken, loadCode);
 compilerRouter.delete("/delete/:id", verifyToken, deleteCode);
 compilerRouter.put("/edit/:urlId", verifyToken, editCode);
-compilerRouter.get("/get-all-codes", getAllCodes);
+compilerRouter.get("/get-all-codes",verifyToken, getAllCodes);

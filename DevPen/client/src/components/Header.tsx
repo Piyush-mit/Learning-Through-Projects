@@ -4,32 +4,39 @@ import { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import type { StateType } from "@/redux/store"
 import { findUser, logout } from "@/actions/user.actions"
-import { changeAuth } from "@/redux/slices/themeSlice"
+import { changeAuth, updateUser } from "@/redux/slices/themeSlice"
 import toast from "react-hot-toast"
 
 function Header() {
-  const authorised = useSelector((state:StateType)=>state.themeSlice.auth);
+  const authorised = useSelector((state: StateType) => state.themeSlice.auth);
   const dispatch = useDispatch();
-  useEffect(()=>{
-      findUser().then((response)=>{
-        if(response.status === 200) {
-          dispatch(changeAuth(true));
-        };
-      }).catch((err:any)=>toast.error('Error connecting to server'));
-  },[authorised])
+  useEffect(() => {
+    if (!authorised) {
+      try {
+        findUser().then((response) => {
+          if (response.status === 200) {
+            dispatch(changeAuth(true));
+            dispatch(updateUser({ username: response.data.username, email: response.data.email }))
+          };
+        })
+      } catch (error) {
+        toast.error("Error connecting to server");
+      }
+    }
+  }, [authorised])
 
   const handleLogout = useCallback(async () => {
     try {
       const response = await logout();
-      if(response.status === 200) {
+      if (response.status === 200) {
         toast.success("Logged out")
         dispatch(changeAuth(false));
       }
-      else toast.error(response.data.message); 
+      else toast.error(response.data.message);
     } catch (error) {
       toast.error('Logout failed')
     }
-  },[authorised])
+  }, [authorised])
   return (
     <div className=" sticky top-0 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 z-50 px-16 flex items-center h-[60px] justify-between">
 

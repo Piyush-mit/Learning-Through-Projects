@@ -12,5 +12,5 @@ exports.compilerRouter.post("/save", verifyToken_1.verifyToken, compiler_Control
 exports.compilerRouter.get("/load/:urlId", verifyToken_1.verifyToken, compiler_Controller_1.loadCode);
 exports.compilerRouter.delete("/delete/:id", verifyToken_1.verifyToken, compiler_Controller_1.deleteCode);
 exports.compilerRouter.put("/edit/:urlId", verifyToken_1.verifyToken, compiler_Controller_1.editCode);
-exports.compilerRouter.get("/get-all-codes", compiler_Controller_1.getAllCodes);
+exports.compilerRouter.get("/get-all-codes", verifyToken_1.verifyToken, compiler_Controller_1.getAllCodes);
 //# sourceMappingURL=compilerRouter.js.map
