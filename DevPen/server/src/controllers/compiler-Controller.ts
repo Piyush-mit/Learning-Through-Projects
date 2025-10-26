@@ -21,12 +21,12 @@ export const saveOrUpdateCode = async (req: AuthRequest, res: Response) => {
     // finding user
     const user = await User.findById(req._id);
     if (!user) {
-      return res.status(404).json({ message: "User not found!" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Validate submit
     if (!fullCode.html && !fullCode.css && !fullCode.javascript) {
-      return res.status(400).json({ message: "Code cannot be blank!" });
+      return res.status(400).json({ message: "Code cannot be blank" });
     }
 
     // Check if code with same title already exists
@@ -36,7 +36,7 @@ export const saveOrUpdateCode = async (req: AuthRequest, res: Response) => {
       existingCode.fullCode = fullCode;
       await existingCode.save();
 
-      return res.status(200).json({ message: "Code updated successfully" , urlId : existingCode._id });
+      return res.status(200).json({ message: "Code updated successfully", urlId: existingCode._id });
     } else {
       // new save
       const newCode = await Code.create({
@@ -159,22 +159,48 @@ export const loadCode = async (req: AuthRequest, res: Response) => {
   }
 };
 
+// export const getMyCodes = async (req: AuthRequest, res: Response) => {
+//   const userId = req._id;
+//   try {
+//     // finding user
+//     const user = await User.findById(userId).populate({
+//       path: "savedCodes",
+//       options: { sort: { createdAt: -1 } }, // sorting codes in descending order based on creation date
+//     });
+
+//     if (!user) {
+//       return res.status(404).send({ message: "Cannot find User" });
+//     }
+//     return res.status(200).send(user.savedCodes);
+//   } catch (error) {
+//     return res.status(500).send({ message: "Error loading your codes", error });
+//   }
+// };
 export const getMyCodes = async (req: AuthRequest, res: Response) => {
   const userId = req._id;
+
   try {
-    // finding user
+    // find user and populate saved codes sorted by updatedAt (descending)
     const user = await User.findById(userId).populate({
       path: "savedCodes",
-      options: { sort: { createdAt: -1 } }, // sorting codes in descending order based on creation date
+      options: { sort: { updatedAt: -1 } }, // sort by updatedAt
+      select: "title fullCode updatedAt",   // only fetch required fields from DB
     });
 
     if (!user) {
-      return res.status(404).send({ message: "Cannot find User!" });
+      return res.status(404).send({ message: "Cannot find User" });
     }
 
-    return res.status(200).send(user.savedCodes);
+    // explicitly map 
+    const formattedCodes = user.savedCodes.map((code: any) => ({
+      _id: code._id,
+      title: code.title,
+      fullCode: code.fullCode
+    }));
+    return res.status(200).json({codes : formattedCodes , username : user.username , email : user.email});
   } catch (error) {
-    return res.status(500).send({ message: "Error loading my codes!", error });
+    console.error(error);
+    return res.status(500).json({ message: "Error loading your codes", error });
   }
 };
 
@@ -185,7 +211,7 @@ export const deleteCode = async (req: AuthRequest, res: Response) => {
     // check user and code and match credentials
     const owner = await User.findById(userId);
     if (!owner) {
-      return res.status(404).send({ message: "Cannot find the owner profile!" });
+      return res.status(404).send({ message: "Cannot find the owner profile" });
     }
 
     const existingCode = await Code.findById(id);
@@ -196,18 +222,18 @@ export const deleteCode = async (req: AuthRequest, res: Response) => {
     if (existingCode.ownerName !== owner.username) {
       return res
         .status(400)
-        .send({ message: "You don't have permission to delete this code!" });
+        .send({ message: "You don't have permission to delete this code" });
     }
 
     const deleteCode = await Code.findByIdAndDelete(id);
 
     if (deleteCode) {
-      return res.status(200).send({ message: "Code Deleted successfully!" });
+      return res.status(200).send({ message: "Code Deleted successfully" });
     } else {
       return res.status(404).send({ message: "Code not found" });
     }
   } catch (error) {
-    return res.status(500).send({ message: "Error deleting code!", error });
+    return res.status(500).send({ message: "Error deleting code", error });
   }
 };
 
@@ -219,16 +245,16 @@ export const editCode = async (req: AuthRequest, res: Response) => {
     // find user and code
     const owner = await User.findById(userId);
     if (!owner) {
-      return res.status(404).send({ message: "Cannot find owner!" });
+      return res.status(404).send({ message: "Cannot find owner" });
     }
     const existingCode = await Code.findById(urlId);
     if (!existingCode) {
-      return res.status(404).send({ message: "Cannot find post to edit!" });
+      return res.status(404).send({ message: "Cannot find post to edit" });
     }
 
     // match credentials 
     if (existingCode.ownerName !== owner.username) {
-      return res.status(400).send({ message: "You don't have permission to edit this post!" });
+      return res.status(400).send({ message: "You don't have permission to edit this post" });
     }
 
     // find and update
@@ -238,7 +264,7 @@ export const editCode = async (req: AuthRequest, res: Response) => {
 
     return res.status(200).send({ message: "Code updated successfully" });
   } catch (error) {
-    return res.status(500).send({ message: "Error editing code!", error });
+    return res.status(500).send({ message: "Error editing code", error });
   }
 };
 
@@ -247,6 +273,6 @@ export const getAllCodes = async (req: AuthRequest, res: Response) => {
     const allCodes = await Code.find().sort({ createdAt: -1 });
     return res.status(200).send(allCodes);
   } catch (error) {
-    return res.status(500).send({ message: "Error editing code!", error });
+    return res.status(500).send({ message: "Error editing code", error });
   }
 };

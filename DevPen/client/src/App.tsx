@@ -7,20 +7,25 @@ import Compiler from "./Pages/Compiler"
 import NotFound from "./components/NotFound"
 import SignUp from "./Pages/Signup"
 import SignIn from "./Pages/SignIn"
-import Listprojects from "./components/Profile"
+import { AppSidebar } from "./components/Sidebar"
+import { SidebarProvider } from "./components/ui/sidebar"
 
 function App() {
   return (
     <Suspense fallback={<LoadingFallback />}>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/compiler/:urlId?" element={<Compiler />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/test" element={<Listprojects />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <SidebarProvider>
+        <AppSidebar/>
+        <div className="flex-col flex-1">
+          <Header/>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/compiler/:urlId?" element={<Compiler />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </SidebarProvider>
     </Suspense>
   )
 }

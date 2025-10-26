@@ -6,13 +6,13 @@ import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast';
 import { store } from './redux/store.ts'
 import { Provider } from 'react-redux'
-
+import { SidebarProvider } from "@/components/ui/sidebar"
 createRoot(document.getElementById('root')!).render(
   <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
     <Toaster />
     <BrowserRouter>
       <Provider store={store}>
-        <App />
+          <App />
       </Provider>
     </BrowserRouter>
   </ThemeProvider>

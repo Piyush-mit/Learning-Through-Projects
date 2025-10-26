@@ -1,15 +1,32 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { CompilerStateType } from "./compilerSlice";
+export interface UserCode {
+    _id: string;
+    title: string;
+    fullCode: CompilerStateType["fullCode"];
+}
+interface ThemeState {
+    value: string;
+    auth: boolean;
+    user: {
+        username: string;
+        email: string;
+        codes: UserCode[];
+    };
+}
 
+export const initialThemeState: ThemeState = {
+    value: 'githubDark',
+    auth: false,
+    user: {
+        username: 'user',
+        email: 'johndoe@gmail.com',
+        codes: []
+    }
+};
 const themeSlice = createSlice({
     name: 'themeSlice',
-    initialState: {
-        value: 'githubDark',
-        auth: false,
-        user: {
-            username: 'User',
-            email: 'johndoe@gmail.com',
-        },
-    },
+    initialState:initialThemeState,
     reducers: {
         changeTheme: (state, action: PayloadAction<string>) => {
             state.value = action.payload;
@@ -17,12 +34,13 @@ const themeSlice = createSlice({
         changeAuth: (state, action: PayloadAction<boolean>) => {
             state.auth = action.payload;
         },
-        updateUser: (state, action: PayloadAction<{ 
-            username: string, 
+        updateUser: (state, action: PayloadAction<{
+            username: string,
             email: string,
+            codes: UserCode[]
         }>) => {
             state.user = action.payload;
-        }
+        },
     }
 })
 

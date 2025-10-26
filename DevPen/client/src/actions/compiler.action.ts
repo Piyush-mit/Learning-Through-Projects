@@ -18,8 +18,8 @@ export const handleSave = async (fullCode: CompilerStateType['fullCode'], naviga
             navigate(`/compiler/${id}`, { replace: true });
         }
         else toast.error("Saving failed");
-    } catch (error) {
-        toast.error("Failed to reach the server");
+    } catch (error:any) {
+        toast.error(error.response.data.message);
     } finally {
         setSaving(false);
     }
@@ -41,8 +41,8 @@ export const getCode = async (urlId: string, dispatch: Dispatch<UnknownAction>) 
             return true;
         }
         return false;
-    } catch (error) {
-        toast.error("Please login first");
+    } catch (error:any) {
+        toast.error(error.response.data.message);
         return false;
     }
 }

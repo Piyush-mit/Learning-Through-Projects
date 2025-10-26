@@ -86,7 +86,7 @@ const initialState: CompilerStateType = {
     javascript: javascriptBase
   },
   currentLanguage: 'html',
-  title: 'DevPen project'
+  title: 'DevPen default'
 }
 
 const compilerSlice = createSlice({
