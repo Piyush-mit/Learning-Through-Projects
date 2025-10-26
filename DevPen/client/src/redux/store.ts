@@ -5,7 +5,7 @@ import themeSlice from './slices/themeSlice'
 export const store = configureStore({
     reducer: {
         compilerSlice,
-        themeSlice
+        themeSlice,
     },
 })
 

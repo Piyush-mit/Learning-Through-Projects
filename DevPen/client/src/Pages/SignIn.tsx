@@ -10,8 +10,10 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { changeAuth } from "@/redux/slices/themeSlice"
 import { useCallback, useRef, useState } from "react"
 import toast from "react-hot-toast"
+import { useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 
 export default function SignIn() {
@@ -19,6 +21,7 @@ export default function SignIn() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClick = useCallback(async () => {
     try {
@@ -29,6 +32,7 @@ export default function SignIn() {
         const response = await loginUser(email, password);
         if (response.status === 200) {
           toast.success("Login Successful");
+          dispatch(changeAuth(true));
           navigate('/compiler');
         } else {
           toast.error(response.data.message);

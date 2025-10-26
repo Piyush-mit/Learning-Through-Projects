@@ -24,3 +24,21 @@ export const loginUser = async (email: string, password: string) => {
         return error?.response;
     }
 }
+
+export const findUser = async () => {
+    try {
+        const response = await axios.get('http://localhost:4000/user/user-details', { withCredentials: true });
+        return response;
+    } catch (error: any) {
+        return error?.response;
+    }
+}
+
+export const logout = async () => {
+    try {
+        const response = await axios.post('http://localhost:4000/user/logout', {}, { withCredentials: true })
+        return response;
+    } catch (error: any) {
+        return error?.response;
+    }
+}

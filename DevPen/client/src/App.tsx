@@ -14,8 +14,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/compiler" element={<Compiler />} />
-        <Route path="/compiler/:urlId" element={<Compiler />} />
+        <Route path="/compiler/:urlId?" element={<Compiler />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="*" element={<NotFound />} />
