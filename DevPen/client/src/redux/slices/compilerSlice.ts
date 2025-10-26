@@ -7,7 +7,8 @@ export interface CompilerStateType {
     css: string
     javascript: string
   }
-  currentLanguage: "html" | "css" | "javascript"
+  currentLanguage: "html" | "css" | "javascript",
+  title?: string
 }
 
 export const htmlBase = `<!DOCTYPE html>
@@ -85,6 +86,7 @@ const initialState: CompilerStateType = {
     javascript: javascriptBase
   },
   currentLanguage: 'html',
+  title: 'DevPen project'
 }
 
 const compilerSlice = createSlice({
@@ -99,9 +101,12 @@ const compilerSlice = createSlice({
     },
     updateFullCode: (state, action: PayloadAction<CompilerStateType['fullCode']>) => {
       state.fullCode = action.payload;
+    },
+    upDateTitle: (state, action: PayloadAction<CompilerStateType['title']>) => {
+      state.title = action.payload;
     }
   }
 })
 
 export default compilerSlice.reducer;
-export const { updateCurrentLanguage, updateCode, updateFullCode } = compilerSlice.actions;
+export const { updateCurrentLanguage, updateCode, updateFullCode, upDateTitle } = compilerSlice.actions;

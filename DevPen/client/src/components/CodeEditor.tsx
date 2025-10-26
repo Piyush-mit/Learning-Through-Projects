@@ -21,9 +21,11 @@ import type { StateType } from "@/redux/store";
 import { updateCode } from "@/redux/slices/compilerSlice";
 import { handleCopy, handleSave, handleShare } from "@/actions/compiler.action";
 import { useNavigate, useParams } from "react-router-dom";
+import { SaveDialog } from "./SaveDialog";
 
 export default function CodeEditor({ theme: themeKey }: { theme: string }) {
     const fullCode = useSelector((state: StateType) => state.compilerSlice.fullCode);
+    const title = useSelector((state: StateType) => state.compilerSlice.title);
     const currentLanguage = useSelector((state: StateType) => state.compilerSlice.currentLanguage);
     const [saving, setSaving] = useState(false);
     const dispatch = useDispatch();
@@ -53,7 +55,7 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
     }, [currentLanguage]);
 
     const handleSaveClick = useCallback(() => {
-        handleSave(fullCode, navigate, setSaving);
+        handleSave(fullCode, navigate, setSaving,title);
     }, [fullCode, navigate]);
 
     const handleCopyClick = useCallback(() => {
@@ -67,9 +69,9 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
     return (
         <div className="flex h-screen flex-col">
             {/* Editor options */}
-            <div className=" flex justify-between items-center px-2 min-h-12 max-h-12">
+            <div className=" flex justify-between items-center min-h-12 max-h-12">
                 {/* selects */}
-                <div className="flex gap-2 h-full items-center">
+                <div className="flex gap-2 h-full items-center mx-1">
                     <ThemeSelect />
                     <LanguageSelect />
                 </div>
@@ -83,6 +85,7 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
                         {saving ? <Loader2 className=" animate-spin" /> : <SaveIcon />}
                     </Button>
                     <Button variant={'custom'} size={"sm"} onClick={handleCopyClick}><CopyIcon /></Button>
+                    <SaveDialog />
                 </div>
             </div>
             {/* Code Editor Window */}

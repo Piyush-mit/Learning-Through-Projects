@@ -9,47 +9,131 @@ export interface fullCodeType {
   javascript: string;
 };
 
-export const saveCode = async (req: AuthRequest, res: Response) => {
-  const { fullCode, title }: { fullCode: fullCodeType; title: string } = req.body;
-  let ownerName = "Anonymous";
-  let user = undefined;
-  let ownerInfo = undefined;
-  let isAuthenticated = false;
-
-  // checking for existing user , if not user has to create account first
-  if (req._id) {
-    user = await User.findById(req._id);
-    if (!user) {
-      return res.status(404).send({ message: "User not found!" });
-    }
-    ownerName = user?.username;
-    ownerInfo = user._id;
-    isAuthenticated = true;
-  }
-  // checking if empty strings being pushed
-  if (!fullCode.html && !fullCode.css && !fullCode.javascript) {
-    return res.status(400).send({ message: "Code cannot be blank!" });
-  }
-
-  // if user exists and code is valid (not empty) push the code
+export const saveOrUpdateCode = async (req: AuthRequest, res: Response) => {
   try {
-    const newCode = await Code.create({
-      fullCode: fullCode,
-      ownerName: ownerName,
-      ownerInfo: ownerInfo,
-      title: title,
-    });
+    const { fullCode, title }: { fullCode: fullCodeType; title: string } = req.body;
 
-    // now update the user's saved codes as code is saved 
-    if (isAuthenticated && user && newCode) {
+    // checkin auth
+    if (!req._id) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    // finding user
+    const user = await User.findById(req._id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    // Validate submit
+    if (!fullCode.html && !fullCode.css && !fullCode.javascript) {
+      return res.status(400).json({ message: "Code cannot be blank!" });
+    }
+
+    // Check if code with same title already exists
+    const existingCode = await Code.findOne({ ownerInfo: user._id, title });
+    if (existingCode) {
+      // update
+      existingCode.fullCode = fullCode;
+      await existingCode.save();
+
+      return res.status(200).json({ message: "Code updated successfully" });
+    } else {
+      // new save
+      const newCode = await Code.create({
+        fullCode,
+        ownerName: user.username,
+        ownerInfo: user._id,
+        title,
+      });
+
       user.savedCodes.push(newCode._id);
       await user.save();
+
+      return res.status(201).json({ message: "Code saved successfully", urlId: newCode._id });
     }
-    return res.status(201).send({ urlId: newCode._id });
   } catch (error) {
-    return res.status(500).send({ message: "Error saving code", error });
+    return res.status(500).json({ message: "Internal server error", error });
   }
 };
+
+// export const saveCode = async (req: AuthRequest, res: Response) => {
+//   const { fullCode, title }: { fullCode: fullCodeType; title: string } = req.body;
+//   let ownerName = "Anonymous";
+//   let user = undefined;
+//   let ownerInfo = undefined;
+//   let isAuthenticated = false;
+
+//   // checking for existing user , if not user has to create account first
+//   if (req._id) {
+//     user = await User.findById(req._id);
+//     if (!user) {
+//       return res.status(404).send({ message: "User not found!" });
+//     }
+//     ownerName = user.username;
+//     ownerInfo = user._id;
+//     isAuthenticated = true;
+//   }
+//   // checking if empty strings being pushed
+//   if (!fullCode.html && !fullCode.css && !fullCode.javascript) {
+//     return res.status(400).send({ message: "Code cannot be blank!" });
+//   }
+
+//   // if user exists and code is valid (not empty) push the code
+//   try {
+//     if (!user) {
+//       return res.status(404).send({ message: "User not found!" });
+//     }
+//     const newCode = await Code.create({
+//       fullCode: fullCode,
+//       ownerName: user.username,
+//       ownerInfo: user._id,
+//       title: title,
+//     });
+
+//     // now update the user's saved codes as code is saved 
+//     if (isAuthenticated && user && newCode) {
+//       user.savedCodes.push(newCode._id);
+//       await user.save();
+//     }
+//     return res.status(201).send({ urlId: newCode._id });
+//   } catch (error) {
+//     return res.status(500).send({ message: "Error saving code", error });
+//   }
+// };
+
+// export const updateCode = async (req: AuthRequest, res: Response) => {
+//   try {
+//     const { fullCode, title }: { fullCode: fullCodeType ; title: string } = req.body;
+//     // check auth
+//     if (!req._id) {
+//       return res.status(401).json({ message: "User not authenticated" });
+//     }
+//     // Fetch user and their saved codes
+//     const user = await User.findById(req._id).populate("savedCodes");
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+//     // Find the code with matching title in user's saved codes
+//     const existingCode = user.savedCodes.find(
+//       (code: any) => code.title.toLowerCase() === title.toLowerCase()
+//     );
+//     // If not found ask user to save first
+//     if (!existingCode) {
+//       return res.status(400).json({ message: "Save code first before updating" });
+//     }
+
+//     // Update the fullCode section
+//     await Code.findByIdAndUpdate(
+//       existingCode._id,
+//       { fullCode },
+//       { new: true }
+//     );
+
+//     return res.status(200).json({ message: "Code updated successfully" });
+//   } catch (error) {
+//     return res.status(500).json({ message: "Internal server error" });
+//   }
+// };
 
 export const loadCode = async (req: AuthRequest, res: Response) => {
   // getting the id 

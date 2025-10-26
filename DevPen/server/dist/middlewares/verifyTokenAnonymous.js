@@ -1,22 +1,30 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+// This is just an ideas not implemented yet
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyTokenAnonymous = void 0;
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const verifyTokenAnonymous = async (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) {
-        return next();
-    }
-    jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET, (err, data) => {
-        if (err) {
-            return res.status(401).send({ message: "You are unauthorized." });
-        }
-        req._id = data._id;
-        next();
-    });
-};
-exports.verifyTokenAnonymous = verifyTokenAnonymous;
+// import { NextFunction, Request, Response } from "express";
+// import jwt, { JsonWebTokenError } from "jsonwebtoken";
+// export interface AuthRequest extends Request {
+//   _id?: string;
+// }
+// export const verifyTokenAnonymous = async (
+//   req: AuthRequest,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const token = req.cookies.token;
+//   if (!token) {
+//     return next();
+//   }
+//   jwt.verify(
+//     token,
+//     process.env.JWT_SECRET!,
+//     (err: JsonWebTokenError | null, data: any) => {
+//       if (err) {
+//         return res.status(401).send({ message: "You are unauthorized." });
+//       }
+//       req._id = data._id;
+//       next();
+//     }
+//   );
+// };
 //# sourceMappingURL=verifyTokenAnonymous.js.map
