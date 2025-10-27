@@ -5,11 +5,10 @@ import type { NavigateFunction } from "react-router-dom";
 import type React from "react";
 import type { Dispatch, UnknownAction } from "@reduxjs/toolkit";
 
-export const handleSave = async (fullCode: CompilerStateType['fullCode'], navigate: NavigateFunction, setSaving: React.Dispatch<React.SetStateAction<boolean>>, title: CompilerStateType['title'], urlId: any) => {
+export const handleSave = async (fullCode: CompilerStateType['fullCode'], navigate: NavigateFunction, setSaving: React.Dispatch<React.SetStateAction<boolean>>, title: CompilerStateType['title'], urlId?: any) => {
     try {
-        console.log(urlId);
         setSaving(true);
-        const response = await axios.post('http://localhost:4000/compiler/save', {
+        const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/compiler/save`, {
             fullCode: fullCode,
             title: title,
             urlId: urlId
@@ -37,7 +36,7 @@ export const handleCopy = async (fullCode: CompilerStateType['fullCode'], curren
 
 export const getCode = async (urlId: string, dispatch: Dispatch<UnknownAction>) => {
     try {
-        const response = await axios.get(`http://localhost:4000/compiler/load/${urlId}`, { withCredentials: true });
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/compiler/load/${urlId}`, { withCredentials: true });
         if (response.status === 200) {
             dispatch(updateFullCode(response.data.fullCode));
             return true;
@@ -58,4 +57,16 @@ export const handleShare = async (currentURL: string) => {
     }
 }
 
-
+export const deleteCode = async (urlId: string) => {
+    try {
+        
+        const response = await axios.delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/compiler/delete/${urlId}`, { withCredentials: true });
+        if(response.status === 200){
+            return response ;
+        }else{
+            toast.error("Deletion failed")
+        }
+    } catch (error:any) {
+        return error.response.data.message ;
+    }
+}

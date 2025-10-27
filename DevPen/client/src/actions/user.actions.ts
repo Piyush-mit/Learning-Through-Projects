@@ -2,7 +2,7 @@ import axios from "axios"
 
 export const createUser = async (username: string, email: string, password: string) => {
     try {
-        const response = await axios.post('http://localhost:4000/user/signup', {
+        const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/signup`, {
             "username": username,
             "email": email,
             "password": password
@@ -15,7 +15,7 @@ export const createUser = async (username: string, email: string, password: stri
 
 export const loginUser = async (email: string, password: string) => {
     try {
-        const response = await axios.post('http://localhost:4000/user/login', {
+        const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/login`, {
             "email": email,
             "password": password
         }, { withCredentials: true });
@@ -25,9 +25,9 @@ export const loginUser = async (email: string, password: string) => {
     }
 }
 
-export const findUserInfo = async () => {
+export const findUserInfo= async () => {
     try {
-        const response = await axios.get('http://localhost:4000/user/my-codes', { withCredentials: true });
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/my-codes`, { withCredentials: true });
         return response;
     } catch (error: any) {
         return error?.response;
@@ -36,17 +36,7 @@ export const findUserInfo = async () => {
 
 export const logout = async () => {
     try {
-        const response = await axios.post('http://localhost:4000/user/logout', {}, { withCredentials: true })
-        return response;
-    } catch (error: any) {
-        return error?.response;
-    }
-}
-
-export const getProjects = async () => {
-    try {
-        const response = await axios.get('http://localhost:4000/user/my-codes', { withCredentials: true });
-        console.log(response);
+        const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/logout`, {}, { withCredentials: true })
         return response;
     } catch (error: any) {
         return error?.response;

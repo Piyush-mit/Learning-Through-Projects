@@ -26,7 +26,7 @@ export const initialThemeState: ThemeState = {
 };
 const themeSlice = createSlice({
     name: 'themeSlice',
-    initialState:initialThemeState,
+    initialState: initialThemeState,
     reducers: {
         changeTheme: (state, action: PayloadAction<string>) => {
             state.value = action.payload;
@@ -41,8 +41,11 @@ const themeSlice = createSlice({
         }>) => {
             state.user = action.payload;
         },
+        updateUserCodes: (state, action: PayloadAction<string>) => {
+            state.user.codes.filter(code => code._id != action.payload);
+        }
     }
 })
 
 export default themeSlice.reducer;
-export const { changeTheme, changeAuth, updateUser } = themeSlice.actions;
+export const { changeTheme, changeAuth, updateUser, updateUserCodes } = themeSlice.actions;

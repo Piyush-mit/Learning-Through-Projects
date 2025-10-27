@@ -1,13 +1,14 @@
-import { useEffect} from "react"
+import { useCallback, useEffect } from "react"
 import { ScrollArea } from "./ui/scroll-area"
 import toast from "react-hot-toast";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { StateType } from "@/redux/store";
-import { changeAuth, updateUser } from "@/redux/slices/themeSlice";
+import { changeAuth, updateUser, updateUserCodes } from "@/redux/slices/themeSlice";
 import { findUserInfo } from "@/actions/user.actions";
-
+import { deleteCode } from "@/actions/compiler.action";
+import { Trash2 } from 'lucide-react'
 
 function Listprojects() {
     const navigate = useNavigate();
@@ -25,15 +26,23 @@ function Listprojects() {
                     dispatch(updateUser({ username, email, codes }));
                 }
             })
-        }catch(error){}
+        } catch (error) { }
     }, [])
+
+    const handleDelete = useCallback((urlId: string) => {
+        deleteCode(urlId).then((response) => {
+            dispatch(updateUserCodes(response.data.urlId));
+            navigate('/compiler');
+        })
+    }, []);
     return (
         <ScrollArea className="h-full rounded-md inline-block w-full pt-4 border">
             <div className="flex-col">
                 <h4 className=" pl-4 text-md leading-none font-medium border-b pb-4">Your Projects</h4>
-                {projects.map((project: any) => (
-                    <div className="flex w-full items-center justify-between text-sm p-0" key={project._id}>
-                        <Button variant="ghost" onClick={() => navigate(`/compiler/${project._id}`, { replace: true })} className="w-full justify-start rounded-none" >{project.title}</Button>
+                {projects && projects.map((project: any) => (
+                    <div className="flex items-center justify-between text-sm p-0 w-62 hover:bg-accent/90" key={project._id}>
+                        <span className="mx-2 h-full hover:bg-gray-500/30 rounded"><Trash2 className=" scale-80" onClick={() => handleDelete(project._id)} /></span>
+                        <Button variant="ghost" onClick={() => navigate(`/compiler/${project._id}`, { replace: true })} className="w-full  justify-start rounded-none p-0 pr-7" > {project.title} </Button>
                     </div>
                 ))}
             </div>
