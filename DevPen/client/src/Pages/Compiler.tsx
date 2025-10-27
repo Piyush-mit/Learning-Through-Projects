@@ -18,6 +18,16 @@ function Compiler() {
     if (urlId) {
       try {
         getCode(urlId, dispatch)
+        findUserInfo().then((response) => {
+          if (response.status === 200) {
+            dispatch(changeAuth(true));
+            const username = response.data.username;
+            const email = response.data.email;
+            const codes = response.data.codes;
+            if (!response.data) return toast.error("Error fetching user")
+            dispatch(updateUser({ username, email, codes }));
+          }
+        })
       } catch (error) {
         toast.error("Error fetching code")
       }
@@ -43,12 +53,12 @@ function Compiler() {
     } catch (error) { }
   }, []);
   return (
-    <div>
+    <div className="w-screen">
       <ResizablePanelGroup
         direction="horizontal"
         className="md:min-w-[450px]"
       >
-        <ResizablePanel defaultSize={50} className=" h-[calc(100dvh-61px)] min-w-[450px]">
+        <ResizablePanel defaultSize={50} className=" h-[calc(100dvh-61px)] min-w-[50px]">
           <CodeEditor theme={theme} />
         </ResizablePanel>
         <ResizableHandle />

@@ -7,6 +7,7 @@ import { findUserInfo, logout } from "@/actions/user.actions"
 import { changeAuth, initialThemeState, updateUser } from "@/redux/slices/themeSlice"
 import toast from "react-hot-toast"
 import { SidebarTrigger } from "./ui/sidebar"
+import { cssBase, htmlBase, javascriptBase, updateFullCode } from "@/redux/slices/compilerSlice"
 
 function Header() {
   const authorised = useSelector((state: StateType) => state.themeSlice.auth);
@@ -16,13 +17,12 @@ function Header() {
       try {
         findUserInfo().then((response) => {
           if (response.status === 200) {
-            console.log(response);
             dispatch(changeAuth(true));
-            const username = response.data.username ;
-            const email = response.data.email ;
-            const codes = response.data.codes ;
-            if(!response.data) return toast.error("Error fetching user")
-            dispatch(updateUser({username , email , codes }));
+            const username = response.data.username;
+            const email = response.data.email;
+            const codes = response.data.codes;
+            if (!response.data) return toast.error("Error fetching user")
+            dispatch(updateUser({ username, email, codes }));
           }
         })
       } catch (error) {
@@ -38,6 +38,7 @@ function Header() {
         toast.success("Logged out")
         dispatch(changeAuth(false));
         dispatch(updateUser(initialThemeState.user))
+        dispatch(updateFullCode({html:htmlBase , css:cssBase ,javascript:javascriptBase}));
       }
       else toast.error(response.data.message);
     } catch (error) {
@@ -49,7 +50,7 @@ function Header() {
 
       <Link to={'/'}>
         <div className=" flex gap-2 h-full items-center select-none">
-          <SidebarTrigger className="mx-1"/>
+          <SidebarTrigger className="mx-1 scale-120"/>
           <div className=" font-doto font-bold text-xl">DevPen</div>
           <div className=" font-doto text-xl">Compiler</div>
         </div>
@@ -58,10 +59,10 @@ function Header() {
       <div className=" flex items-center h-full">
         <div className="text-gray-400 flex gap-6 mx-6">
           <Link to={'/'}> <div className="hover:text-gray-200 transition-colors"> Home </div> </Link>
+          <Link to={'/compiler'}> <div className="hover:text-gray-200 transition-colors"> Compiler </div> </Link>
           {!authorised && <Link to={'/signup'}> <div className="hover:text-gray-200 transition-colors"> Sign up </div> </Link>}
           {!authorised && <Link to={'/signin'}> <div className="hover:text-gray-200 transition-colors"> Sign in </div> </Link>}
-          {authorised && <Link to={''}><div className="hover:text-gray-200 transition-colors hover:cursor-pointer" onClick={handleLogout}> Logout </div></Link>}
-          <Link to={'/compiler'}> <div className="hover:text-gray-200 transition-colors"> Compiler </div> </Link>
+          {authorised && <Link to={''}><div className="hover:text-gray-200 transition-colors hover:cursor-pointer" onClick={handleLogout}>Logout </div></Link>}
         </div>
         <ModeToggle />
       </div>

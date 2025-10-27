@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Code } from "../models/Code";
 import { AuthRequest } from "../middlewares/verifyToken";
 import { User } from "../models/User";
+import mongoose from "mongoose";
 
 export interface fullCodeType {
   html: string;
@@ -11,7 +12,7 @@ export interface fullCodeType {
 
 export const saveOrUpdateCode = async (req: AuthRequest, res: Response) => {
   try {
-    const { fullCode, title }: { fullCode: fullCodeType; title: string } = req.body;
+    const { fullCode, title , urlId }: { fullCode: fullCodeType; title: string ; urlId : mongoose.Types.ObjectId } = req.body;
 
     // checkin auth
     if (!req._id) {
@@ -24,9 +25,20 @@ export const saveOrUpdateCode = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+
     // Validate submit
     if (!fullCode.html && !fullCode.css && !fullCode.javascript) {
       return res.status(400).json({ message: "Code cannot be blank" });
+    }
+
+    // if this project exist with the user then update that
+    if(user.savedCodes.includes(urlId)){
+        const prevProject = await Code.findById(urlId);
+        if(prevProject){
+          prevProject.fullCode = fullCode ;
+          await prevProject.save();
+          return res.status(200).json({ message: "Code updated successfully", urlId: prevProject._id })
+        }
     }
 
     // Check if code with same title already exists
@@ -56,84 +68,6 @@ export const saveOrUpdateCode = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// export const saveCode = async (req: AuthRequest, res: Response) => {
-//   const { fullCode, title }: { fullCode: fullCodeType; title: string } = req.body;
-//   let ownerName = "Anonymous";
-//   let user = undefined;
-//   let ownerInfo = undefined;
-//   let isAuthenticated = false;
-
-//   // checking for existing user , if not user has to create account first
-//   if (req._id) {
-//     user = await User.findById(req._id);
-//     if (!user) {
-//       return res.status(404).send({ message: "User not found!" });
-//     }
-//     ownerName = user.username;
-//     ownerInfo = user._id;
-//     isAuthenticated = true;
-//   }
-//   // checking if empty strings being pushed
-//   if (!fullCode.html && !fullCode.css && !fullCode.javascript) {
-//     return res.status(400).send({ message: "Code cannot be blank!" });
-//   }
-
-//   // if user exists and code is valid (not empty) push the code
-//   try {
-//     if (!user) {
-//       return res.status(404).send({ message: "User not found!" });
-//     }
-//     const newCode = await Code.create({
-//       fullCode: fullCode,
-//       ownerName: user.username,
-//       ownerInfo: user._id,
-//       title: title,
-//     });
-
-//     // now update the user's saved codes as code is saved 
-//     if (isAuthenticated && user && newCode) {
-//       user.savedCodes.push(newCode._id);
-//       await user.save();
-//     }
-//     return res.status(201).send({ urlId: newCode._id });
-//   } catch (error) {
-//     return res.status(500).send({ message: "Error saving code", error });
-//   }
-// };
-
-// export const updateCode = async (req: AuthRequest, res: Response) => {
-//   try {
-//     const { fullCode, title }: { fullCode: fullCodeType ; title: string } = req.body;
-//     // check auth
-//     if (!req._id) {
-//       return res.status(401).json({ message: "User not authenticated" });
-//     }
-//     // Fetch user and their saved codes
-//     const user = await User.findById(req._id).populate("savedCodes");
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-//     // Find the code with matching title in user's saved codes
-//     const existingCode = user.savedCodes.find(
-//       (code: any) => code.title.toLowerCase() === title.toLowerCase()
-//     );
-//     // If not found ask user to save first
-//     if (!existingCode) {
-//       return res.status(400).json({ message: "Save code first before updating" });
-//     }
-
-//     // Update the fullCode section
-//     await Code.findByIdAndUpdate(
-//       existingCode._id,
-//       { fullCode },
-//       { new: true }
-//     );
-
-//     return res.status(200).json({ message: "Code updated successfully" });
-//   } catch (error) {
-//     return res.status(500).json({ message: "Internal server error" });
-//   }
-// };
 
 export const loadCode = async (req: AuthRequest, res: Response) => {
   // getting the id 
@@ -159,23 +93,7 @@ export const loadCode = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// export const getMyCodes = async (req: AuthRequest, res: Response) => {
-//   const userId = req._id;
-//   try {
-//     // finding user
-//     const user = await User.findById(userId).populate({
-//       path: "savedCodes",
-//       options: { sort: { createdAt: -1 } }, // sorting codes in descending order based on creation date
-//     });
 
-//     if (!user) {
-//       return res.status(404).send({ message: "Cannot find User" });
-//     }
-//     return res.status(200).send(user.savedCodes);
-//   } catch (error) {
-//     return res.status(500).send({ message: "Error loading your codes", error });
-//   }
-// };
 export const getMyCodes = async (req: AuthRequest, res: Response) => {
   const userId = req._id;
 
@@ -183,7 +101,7 @@ export const getMyCodes = async (req: AuthRequest, res: Response) => {
     // find user and populate saved codes sorted by updatedAt (descending)
     const user = await User.findById(userId).populate({
       path: "savedCodes",
-      options: { sort: { updatedAt: -1 } }, // sort by updatedAt
+      options: { sort: { createdAt: -1 } }, // sort by updatedAt
       select: "title fullCode updatedAt",   // only fetch required fields from DB
     });
 

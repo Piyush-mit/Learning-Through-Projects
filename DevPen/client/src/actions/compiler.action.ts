@@ -5,12 +5,14 @@ import type { NavigateFunction } from "react-router-dom";
 import type React from "react";
 import type { Dispatch, UnknownAction } from "@reduxjs/toolkit";
 
-export const handleSave = async (fullCode: CompilerStateType['fullCode'], navigate: NavigateFunction, setSaving: React.Dispatch<React.SetStateAction<boolean>>, title: CompilerStateType['title']) => {
+export const handleSave = async (fullCode: CompilerStateType['fullCode'], navigate: NavigateFunction, setSaving: React.Dispatch<React.SetStateAction<boolean>>, title: CompilerStateType['title'], urlId: any) => {
     try {
+        console.log(urlId);
         setSaving(true);
         const response = await axios.post('http://localhost:4000/compiler/save', {
             fullCode: fullCode,
-            title: title
+            title: title,
+            urlId: urlId
         }, { withCredentials: true });
         if (response.status === 201 || response.status === 200) {
             toast.success("Saved successfully");
@@ -18,7 +20,7 @@ export const handleSave = async (fullCode: CompilerStateType['fullCode'], naviga
             navigate(`/compiler/${id}`, { replace: true });
         }
         else toast.error("Saving failed");
-    } catch (error:any) {
+    } catch (error: any) {
         toast.error(error.response.data.message);
     } finally {
         setSaving(false);
@@ -41,7 +43,7 @@ export const getCode = async (urlId: string, dispatch: Dispatch<UnknownAction>) 
             return true;
         }
         return false;
-    } catch (error:any) {
+    } catch (error: any) {
         toast.error(error.response.data.message);
         return false;
     }

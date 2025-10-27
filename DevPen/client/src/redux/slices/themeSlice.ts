@@ -19,8 +19,8 @@ export const initialThemeState: ThemeState = {
     value: 'githubDark',
     auth: false,
     user: {
-        username: 'user',
-        email: 'johndoe@gmail.com',
+        username: 'username',
+        email: '@',
         codes: []
     }
 };

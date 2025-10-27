@@ -16,7 +16,7 @@ export const htmlBase = `<!DOCTYPE html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DevPen</title>
+    <title>DevPen</title><!
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>

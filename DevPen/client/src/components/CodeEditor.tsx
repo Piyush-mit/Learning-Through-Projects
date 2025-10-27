@@ -61,7 +61,7 @@ export default function CodeEditor({ theme: themeKey }: { theme: string }) {
     }, [currentLanguage]);
 
     const handleSaveClick = useCallback(() => {
-        handleSave(fullCode, navigate, setSaving, title);
+        handleSave(fullCode, navigate, setSaving, title , urlId );
     }, [fullCode, navigate]);
 
     const handleCopyClick = useCallback(() => {

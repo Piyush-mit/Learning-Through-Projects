@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react"
+import { useEffect} from "react"
 import { ScrollArea } from "./ui/scroll-area"
-import { findUserInfo, getProjects } from "@/actions/user.actions";
 import toast from "react-hot-toast";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { StateType } from "@/redux/store";
 import { changeAuth, updateUser } from "@/redux/slices/themeSlice";
+import { findUserInfo } from "@/actions/user.actions";
 
 
 function Listprojects() {
@@ -28,12 +28,12 @@ function Listprojects() {
         }catch(error){}
     }, [])
     return (
-        <ScrollArea className="h-full rounded-md inline-block w-full p-2 pt-4 border">
+        <ScrollArea className="h-full rounded-md inline-block w-full pt-4 border">
             <div className="flex-col">
-                <h4 className="mb-2 pl-4 text-md leading-none font-medium">Your Projects</h4>
+                <h4 className=" pl-4 text-md leading-none font-medium border-b pb-4">Your Projects</h4>
                 {projects.map((project: any) => (
-                    <div className="flex w-full items-center justify-between text-sm">
-                        <Button variant="ghost" onClick={() => navigate(`/compiler/${project._id}`, { replace: true })} className="w-full justify-start" >{project.title}</Button>
+                    <div className="flex w-full items-center justify-between text-sm p-0" key={project._id}>
+                        <Button variant="ghost" onClick={() => navigate(`/compiler/${project._id}`, { replace: true })} className="w-full justify-start rounded-none" >{project.title}</Button>
                     </div>
                 ))}
             </div>

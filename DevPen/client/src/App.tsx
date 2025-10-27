@@ -14,8 +14,8 @@ function App() {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <SidebarProvider>
-        <AppSidebar/>
-        <div className="flex-col flex-1">
+        <div className="flex-col">
+          <AppSidebar/>
           <Header/>
           <Routes>
             <Route path="/" element={<Home />} />
