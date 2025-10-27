@@ -5,10 +5,11 @@ import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { StateType } from "@/redux/store";
-import { changeAuth, updateUser, updateUserCodes } from "@/redux/slices/themeSlice";
+import { changeAuth, filterCodes, updateUser, updateUserCodes } from "@/redux/slices/themeSlice";
 import { findUserInfo } from "@/actions/user.actions";
 import { deleteCode } from "@/actions/compiler.action";
 import { Trash2 } from 'lucide-react'
+import { Input } from "./ui/input";
 
 function Listprojects() {
     const navigate = useNavigate();
@@ -36,9 +37,10 @@ function Listprojects() {
         })
     }, []);
     return (
-        <ScrollArea className="h-full rounded-md inline-block w-full pt-4 border">
+        <ScrollArea className="h-full inline-block w-full pt-4 border">
             <div className="flex-col">
                 <h4 className=" pl-4 text-md leading-none font-medium border-b pb-4">Your Projects</h4>
+                <Input className="focus-visible:border focus-visible:ring-0 rounded" placeholder="Search Projects" onChange={(e)=>dispatch(filterCodes(e.target.value))} ></Input>
                 {projects && projects.map((project: any) => (
                     <div className="flex items-center justify-between text-sm p-0 w-62 hover:bg-accent/90" key={project._id}>
                         <span className="mx-2 h-full hover:bg-gray-500/30 rounded"><Trash2 className=" scale-80" onClick={() => handleDelete(project._id)} /></span>

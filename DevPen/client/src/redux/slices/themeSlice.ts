@@ -12,6 +12,7 @@ interface ThemeState {
         username: string;
         email: string;
         codes: UserCode[];
+        allCodes: UserCode[];
     };
 }
 
@@ -21,7 +22,8 @@ export const initialThemeState: ThemeState = {
     user: {
         username: 'username',
         email: '@',
-        codes: []
+        codes: [],
+        allCodes: []
     }
 };
 const themeSlice = createSlice({
@@ -39,13 +41,28 @@ const themeSlice = createSlice({
             email: string,
             codes: UserCode[]
         }>) => {
-            state.user = action.payload;
+            state.user = {
+                ...action.payload,
+                allCodes: action.payload.codes
+            };
+
         },
         updateUserCodes: (state, action: PayloadAction<string>) => {
-            state.user.codes.filter(code => code._id != action.payload);
+            state.user.codes = state.user.codes.filter(code => code._id != action.payload);
+        },
+        filterCodes: (state, action: PayloadAction<string>) => {
+            const searchTerm = action.payload.toLowerCase();
+            if (searchTerm === "") {
+                // reset when input cleared
+                state.user.codes = state.user.allCodes;
+            } else {
+                state.user.codes = state.user.allCodes.filter(code =>
+                    code.title.toLowerCase().includes(searchTerm)
+                );
+            }
         }
     }
 })
 
 export default themeSlice.reducer;
-export const { changeTheme, changeAuth, updateUser, updateUserCodes } = themeSlice.actions;
+export const { changeTheme, changeAuth, updateUser, updateUserCodes, filterCodes } = themeSlice.actions;
