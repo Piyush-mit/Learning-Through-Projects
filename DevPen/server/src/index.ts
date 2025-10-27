@@ -21,7 +21,7 @@ app.use("/user", userRouter);
 app.use("/public", express.static("public")); // default profile picture 
 
 
-app.listen(4000, () => {
+app.listen(3000, () => {
     dbconnect();
-    console.log("Server active at port 4000");
+    console.log("Server active at port 3000");
 })

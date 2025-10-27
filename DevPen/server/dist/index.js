@@ -21,8 +21,8 @@ app.use((0, cors_1.default)({
 app.use("/compiler", compilerRouter_1.compilerRouter);
 app.use("/user", userRouter_1.userRouter);
 app.use("/public", express_1.default.static("public")); // default profile picture 
-app.listen(4000, () => {
+app.listen(3000, () => {
     (0, dbConnect_1.dbconnect)();
-    console.log("Server active at port 4000");
+    console.log("Server active at port 3000");
 });
 //# sourceMappingURL=index.js.map
